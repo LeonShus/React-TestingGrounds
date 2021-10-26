@@ -1,25 +1,33 @@
-import React from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 
-type TytleType = {
-    title:string
+type AccordionPropsType = {
+    title: string
 }
 
-export const Accordion = (props: TytleType) => {
+export const Accordion : React.FC<AccordionPropsType> = (props) => {
+    let [visible, SetVisible] = useState(true)
+
+    if(!visible){
+        return <PageTitle visible={visible} setVisible={SetVisible} title={props.title}/>
+    }
     return (
         <div>
-            <PageTitle title={props.title}/>
-            <PageTitle title={props.title}/>
+            <PageTitle visible={visible} setVisible={SetVisible} title={props.title}/>
             <AccordionBody/>
         </div>
     )
 }
 
+type PageTitlePropsType = {
+    visible: boolean
+    setVisible: Dispatch<SetStateAction<boolean>>
+    title:string
+}
 
-
-const PageTitle = (props: TytleType) => {
+const PageTitle: React.FC<PageTitlePropsType> = (props) => {
     return (
         <>
-            <h3>{props.title}</h3>
+            <h3 onClick={() => props.setVisible(!props.visible)}>{props.title}</h3>
         </>
     )
 }

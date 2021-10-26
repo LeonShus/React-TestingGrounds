@@ -1,38 +1,37 @@
-import React from "react"
+import React, {Dispatch, SetStateAction, useState} from "react"
+import classes from './Rating.module.css'
 
-type RatingType = {
-    value: 0 | 1 | 2 | 3 | 4 | 5
-}
+export const Rating = () => {
 
-
-export const Rating = (props:RatingType) => {
-
-    let arr =[]
-
-    for(let i = 0; i < props.value; i++){
-        arr.push(<Stars selected={true}/>)
-    }
-    for(let i = 0; i < 5 - props.value; i++){
-        arr.push(<Stars selected={false}/>)
-    }
+    let [stars, SetStars] = useState(0)
 
     return (
         <div>
-            {arr}
+            <Stars setStars={SetStars} stars={stars}/>
         </div>
     )
 }
 
 type StarsType = {
-    selected: boolean
+    setStars: Dispatch<SetStateAction<number>>
+    stars: number
 }
 
-const Stars = (props: StarsType) : any => {
+const Stars: React.FC<StarsType> = (props) => {
 
-    if (props.selected ) {
-        return (<span><b>star </b></span>)
+    let arr = []
+
+    for (let i = 1; i < 5; i++) {
+        arr.push(<span className={`${props.stars >= i && classes.starOn}`}
+                       onClick={() => props.setStars(i)}>Star</span>)
     }
-    if (!props.selected) {
-        return (<span>star </span>)
-    }
+
+    return (
+        <>
+            {arr}
+
+            <span className={`${props.stars === 5 && classes.starOn}`}
+                  onClick={() => props.setStars(5)}>Star</span>
+        </>
+    )
 }

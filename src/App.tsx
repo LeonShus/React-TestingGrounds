@@ -6,7 +6,7 @@ import {OnOff} from "./Components/OnOff/OnOff";
 
 const App = () => {
     return (
-        <div className="App">
+        <div className="container">
 
             <OnOff/>
             <OnOff/>
@@ -14,11 +14,8 @@ const App = () => {
             <OnOff/>
 
 
-            <Rating value={4}/>
-            <Rating value={0}/>
-            <Rating value={3}/>
-            <Rating value={2}/>
-            <Rating value={5}/>
+            <Rating/>
+
             <Accordion title={"This is App Component"}/>
             <Accordion title={"Menu"}/>
         </div>
