@@ -9,6 +9,10 @@ const App = () => {
         <div className="App">
 
             <OnOff/>
+            <OnOff/>
+            <OnOff/>
+            <OnOff/>
+
 
             <Rating value={4}/>
             <Rating value={0}/>

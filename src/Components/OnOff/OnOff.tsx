@@ -12,6 +12,7 @@ export const OnOff = () => {
     }
 
     return (
+
         <div>
             <button className={classes.on} onClick={() => changeSw(true)}>On</button>
             <button className={classes.off} onClick={() => changeSw(false)}>Off</button>
