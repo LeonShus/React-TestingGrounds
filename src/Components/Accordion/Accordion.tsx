@@ -1,43 +1,60 @@
 import React, {Dispatch, SetStateAction, useState} from "react";
 
+type ItemsType = {
+    title: string
+    value: any
+}
+
 export type AccordionPropsType = {
     title: string
+    items: ItemsType[]
+    onClick: (e:any) => void
 }
 
 export const Accordion : React.FC<AccordionPropsType> = (props) => {
     let [visible, SetVisible] = useState(true)
 
-    if(!visible){
-        return <PageTitle visible={visible} setVisible={SetVisible} title={props.title}/>
-    }
     return (
         <div>
             <PageTitle visible={visible} setVisible={SetVisible} title={props.title}/>
-            <AccordionBody/>
+
+            {visible && <AccordionBody items={props.items} onClick={props.onClick}/>}
         </div>
     )
 }
+
+
+
 
 type PageTitlePropsType = {
     visible: boolean
     setVisible: Dispatch<SetStateAction<boolean>>
     title:string
 }
-
 const PageTitle: React.FC<PageTitlePropsType> = (props) => {
+    const onClickHandler = () => {
+        props.setVisible(!props.visible)
+    }
     return (
         <>
-            <h3 onClick={() => props.setVisible(!props.visible)}>{props.title}</h3>
+            <h3 onClick={onClickHandler}>{props.title}</h3>
         </>
     )
 }
-const AccordionBody = () => {
+
+
+type AccordionBodyType = {
+    items: ItemsType[]
+    onClick: (e:any) => void
+}
+
+const AccordionBody = (props : AccordionBodyType) => {
+    const acordLi = props.items.map((el,index) => <li key={index}
+                                                      onClick={() => props.onClick(el.value)}>{el.title}</li>)
     return (
         <>
             <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
+                {acordLi}
             </ul>
         </>
     )
