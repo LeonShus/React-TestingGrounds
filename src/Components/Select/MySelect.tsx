@@ -20,7 +20,6 @@ export const MySelect = (props: SelectPropsType) => {
         setHovered(props.value)
     }, [props.value])
 
-
     const selectedItem = props.items.find(el => el.value === props.value)
 
     //List Visible
@@ -32,15 +31,17 @@ export const MySelect = (props: SelectPropsType) => {
 
     //List open with key press
     const openWithEnter = (e: KeyboardEvent<HTMLDivElement>) => {
+        if(e.key === 'Escape') {
+            setVisible(false)
+        }
         if(e.key === "Enter"){
             visibleClickHandler()
             props.changeVal(hovered)
         }
-        console.log(e.key)
-        if(e.key === 'o' && hovered > 1){
+        if(e.key === 'ArrowUp' && hovered > 1){
             setHovered(hovered - 1)
         }
-        if(e.key === 'l' && hovered < props.items.length){
+        if(e.key === 'ArrowDown' && hovered < props.items.length){
             setHovered(hovered + 1)
         }
     }
@@ -71,7 +72,7 @@ export const MySelect = (props: SelectPropsType) => {
             {/*Title*/}
             <div className={classes.containerTitle}
                  onClick={visibleClickHandler}
-                 onKeyPress={openWithEnter}
+                 onKeyUp={openWithEnter}
                  tabIndex={1}>
                 {selectedItem && selectedItem.title}
             </div>
