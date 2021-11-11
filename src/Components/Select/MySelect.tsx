@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {FormControl, InputLabel, NativeSelect, SelectChangeEvent} from "@mui/material"
+import React, {KeyboardEvent, useEffect, useState} from "react"
+import classes from "./MySelector.module.css"
 
 type ItemType = {
     title: string
@@ -8,37 +8,79 @@ type ItemType = {
 
 export type SelectPropsType = {
     value: any
-    change: (value: any) => void
     items: ItemType[]
+    changeVal: (e: number) => void
 }
 
 export const MySelect = (props: SelectPropsType) => {
-    const [city, setCity] = useState("")
+    //Item
+    const [hovered, setHovered] = useState(props.value)
 
-    const handleChange = (e: SelectChangeEvent<string>) => {
-        setCity(e.target.value)
+    useEffect(() => {
+        setHovered(props.value)
+    }, [props.value])
+
+
+    const selectedItem = props.items.find(el => el.value === props.value)
+
+    //List Visible
+    const [visible, setVisible] = useState<boolean>(false)
+
+    const visibleClickHandler = () => {
+        setVisible(!visible)
     }
 
+    //List open with key press
+    const openWithEnter = (e: KeyboardEvent<HTMLDivElement>) => {
+        if(e.key === "Enter"){
+            visibleClickHandler()
+            props.changeVal(hovered)
+        }
+        console.log(e.key)
+        if(e.key === 'o' && hovered > 1){
+            setHovered(hovered - 1)
+        }
+        if(e.key === 'l' && hovered < props.items.length){
+            setHovered(hovered + 1)
+        }
+    }
+
+    //Arr of List
+    const listArr = props.items.map(el => {
+
+        const onClickHandler = () => {
+            props.changeVal(el.value)
+            visibleClickHandler()
+        }
+        const mouseMoveHandler = () => {
+            setHovered(el.value)
+        }
+        return (
+            <div key={el.value}
+                 className={`${hovered === el.value ? classes.targetList : ""}`}
+                 onClick={onClickHandler}
+                 onMouseMove={mouseMoveHandler}>
+                {el.title}
+            </div>
+        )
+    })
+
     return (
-        <div>
-            <div>{props.value}</div>
-            {props.items.map(el => <div>{el.title}</div>)}
+        <div className={classes.container}>
 
+            {/*Title*/}
+            <div className={classes.containerTitle}
+                 onClick={visibleClickHandler}
+                 onKeyPress={openWithEnter}
+                 tabIndex={1}>
+                {selectedItem && selectedItem.title}
+            </div>
 
-            <FormControl size={"small"}>
-                <InputLabel id="demo-simple-select-label">City</InputLabel>
-                <NativeSelect
-                    defaultValue={4}
-                    inputProps={{
-                        name: 'City',
-                        id: 'uncontrolled-native',
-                    }}
-                    onChange={props.change}
-                >
-                    {props.items.map(el => <option key={el.value} value={el.value}>{el.title}</option>)}
-                </NativeSelect>
-            </FormControl>
-
+            {/*List*/}
+            {visible &&
+            <div className={classes.containerLIst}>
+                {listArr}
+            </div>}
         </div>
 
     )

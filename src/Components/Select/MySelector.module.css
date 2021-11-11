@@ -1,0 +1,19 @@
+.container {
+    max-width: 100px;
+    min-width: 80px;
+}
+.containerTitle{
+    border: 1px solid black;
+    padding: 4px;
+}
+.containerLIst {
+    position: fixed;
+    background: white;
+    z-index: 99;
+    border: 1px solid blue;
+    padding: 8px;
+}
+.targetList{
+    background: blue;
+    color: white;
+}

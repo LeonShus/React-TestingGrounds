@@ -1,6 +1,5 @@
 import {Story} from "@storybook/react"
-import React from "react";
-import {action} from "@storybook/addon-actions";
+import React, {useState} from "react";
 import {MySelect, SelectPropsType} from "./MySelect";
 
 export default {
@@ -8,15 +7,28 @@ export default {
     component: MySelect
 }
 
-const onChangeAction = action('Any')
 
-const Template: Story<SelectPropsType> = (args) => <MySelect {...args} />
+const Template: Story<SelectPropsType> = (args) => {
+
+    const [value, setValue] = useState(1)
+
+    const changeVal = (e: number) => {
+        setValue(e)
+    }
+
+    return (
+        <MySelect {...args}
+                  value={value}
+                  changeVal={changeVal}/>
+    )
+}
 export const Select_1 = Template.bind({})
 Select_1.args = {
-    value: 'City',
-    change:onChangeAction,
-    items: [{title: "Moscow", value: "1"},
-        {title: "Minsk", value: "2"},
-        {title: "Odessa", value: "3"},
-        {title: "NY", value: "4"}],
+    items: [
+        {title: "Moscow", value: 1},
+        {title: "Minsk", value: 2},
+        {title: "Odessa", value: 3},
+        {title: "NY", value: 4}
+    ],
 }
+
